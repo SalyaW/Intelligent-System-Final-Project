@@ -68,7 +68,7 @@ print(np.mean((y_pred - y_test)**2))
 
 print (mean_squared_error(y_test,y_pred))
 
-%matplotlib inline
+#%matplotlib inline
 
 
 # Train Data Set 
@@ -95,6 +95,7 @@ def run_tests():
 df_train = pd.read_csv('train.csv')
 df_train['SalePrice'].describe()
 # Plots Data for Sales Proces
+
 sns.distplot(df_train['SalePrice']);
 
 
@@ -126,6 +127,7 @@ sns.heatmap(df_train[cols].corr(), vmax=.8, square=True);
 
 cols = ['SalePrice', 'OverallQual', 'GrLivArea', 'GarageCars']
 sns.pairplot(df_train[cols], size = 4);
+
 
 #check missing Data
 total = df_train.isnull().sum().sort_values(ascending=False)
@@ -243,7 +245,7 @@ plt.scatter(x[:,1], y)
 line, = ax.plot([], [], lw=2, color='red')
 annotation = ax.text(-1, 700000, '')
 annotation.set_animated(True)
-plt.close()
+
 
 
 x = df_train[['OverallQual', 'GrLivArea', 'GarageCars']]
@@ -255,18 +257,18 @@ clf = LinearRegression()
 clf.fit(x, y, n_iter=2000, lr=0.01)
 
 clf._W
-
-
+'''
+#Loss Cost function
 plt.title('Cost Function J')
 plt.xlabel('No. of iterations')
 plt.ylabel('Cost')
 plt.plot(clf._cost_history)
 plt.show()
+'''
 
 
-
-%matplotlib qt5
 #Generate the animation data,
+
 def init():
     line.set_data([], [])
     annotation.set_text('')
@@ -281,10 +283,9 @@ def animate(i):
     annotation.set_text('Cost = %.2f e10' % (clf._cost_history[i]/10000000000))
     return line, annotation
 
-animation.FuncAnimation(fig, animate, init_func=init,
+anim = animation.FuncAnimation(fig, animate, init_func=init,
                                frames=300, interval=10, blit=True)
 
-
-
+plt.show()
 
 
