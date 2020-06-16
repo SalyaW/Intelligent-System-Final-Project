@@ -115,19 +115,6 @@ fig = sns.boxplot(x=var, y="SalePrice", data=data)
 fig.axis(ymin=0, ymax=800000);
 
 
-corrmat = df_train.corr()
-f, ax = plt.subplots(figsize=(12, 9))
-sns.heatmap(corrmat, vmax=.8, square=True);
-
-
-k = 9 #number of variables for heatmap
-cols = corrmat.nlargest(k, 'SalePrice')['SalePrice'].index
-f, ax = plt.subplots(figsize=(14, 10))
-sns.heatmap(df_train[cols].corr(), vmax=.8, square=True);
-
-cols = ['SalePrice', 'OverallQual', 'GrLivArea', 'GarageCars']
-sns.pairplot(df_train[cols], size = 4);
-
 
 #check missing Data
 total = df_train.isnull().sum().sort_values(ascending=False)
@@ -153,7 +140,7 @@ x.shape
 #print(x.shape)
 
 
-#
+#Calculating loss using Means Squared error
 def loss(h, y):
   sq_error = (h - y)**2
   n = len(y)
@@ -224,18 +211,32 @@ run_tests()
 clf = LinearRegression()
 clf.fit(x, y, n_iter=2000, lr=0.01)
 
-plt.title('Cost Function J')
+fig = plt.figure()
+ax = plt.axes()
+plt.title('Cost Function J for Linear Regression')
 plt.xlabel('No. of iterations')
 plt.ylabel('Cost')
 plt.plot(clf._cost_history)
 plt.show()
 
 clf._cost_history[-1]
+print("Lost Of  Linear Regression:")
+print(clf._cost_history[-1])
+print("                                         ")
+
+#Plotting Loss Cost function for Linear Regression
+fig2 = plt.figure()
+ax = plt.axes()
+plt.title('Cost Function J for Multivariable Linear Regression')
+plt.xlabel('No. of iterations')
+plt.ylabel('Cost')
+plt.plot(clf._cost_history, color='red')
+plt.show()
 
 #Animation
 
 
-#Set the plot up,
+#Set the plot up
 fig = plt.figure()
 ax = plt.axes()
 plt.title('Sale Price vs Living Area')
@@ -257,14 +258,9 @@ clf = LinearRegression()
 clf.fit(x, y, n_iter=2000, lr=0.01)
 
 clf._W
-'''
-#Loss Cost function
-plt.title('Cost Function J')
-plt.xlabel('No. of iterations')
-plt.ylabel('Cost')
-plt.plot(clf._cost_history)
-plt.show()
-'''
+clf._cost_history[-1]
+print("Lost Of Mulltivariable Linear Regression:")
+print(clf._cost_history[-1])
 
 
 #Generate the animation data,
