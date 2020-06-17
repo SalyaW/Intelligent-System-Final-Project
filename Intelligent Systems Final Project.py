@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 """
+references:
+    https://www.youtube.com/watch?v=JTj-WgWLKFM
+    https://towardsdatascience.com/machine-learning-project-predicting-boston-house-prices-with-regression-b4e47493633d
 Created on Mon Jun  8 12:04:49 2020
 
 @author: Salya
-
-References:
-    https://www.youtube.com/watch?v=JTj-WgWLKFM
-    https://towardsdatascience.com/machine-learning-project-predicting-boston-house-prices-with-regression-b4e47493633d
-    https://towardsdatascience.com/predicting-house-prices-with-linear-regression-machine-learning-from-scratch-part-ii-47a0238aeac
-    
-
+  
 """
+
+
+
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -20,7 +20,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from matplotlib import rc
+
+
 import unittest
 
 from sklearn.datasets import load_boston
@@ -47,7 +48,7 @@ df_x.describe()
 
 reg = linear_model.LinearRegression()
 
-x_train, x_test, y_train, y_test = train_test_split(df_x, df_y, test_size= 0.33, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(df_x, df_y, test_size= 0.5, random_state=42)
 
 
 #train the model
@@ -66,7 +67,10 @@ print(y_test)
 
 print(np.mean((y_pred - y_test)**2))
 
+print("MSE:")
 print (mean_squared_error(y_test,y_pred))
+
+
 
 #%matplotlib inline
 
@@ -130,7 +134,6 @@ missing_data.head(20)
 x = df_train['GrLivArea']
 y = df_train['SalePrice']
 
-#print (x)
 
 x = (x - x.mean()) / x.std()
 x = np.c_[np.ones(x.shape[0]), x] 
@@ -159,7 +162,7 @@ class TestLoss(unittest.TestCase):
     self.assertAlmostEqual(loss(h=np.array([2]), y=np.array([0])), 2)
     
   def test_zero_h_one_y(self):
-    self.assertAlmostEqual(loss(h=np.array([0]), y=np.array([1])), 0.5)
+      self.assertAlmostEqual(loss(h=np.array([0]), y=np.array([1])), 0.5)
     
   def test_zero_h_two_y(self):
     self.assertAlmostEqual(loss(h=np.array([0]), y=np.array([2])), 2)
@@ -202,26 +205,26 @@ class LinearRegression:
 class TestLinearRegression(unittest.TestCase):
 
     def test_find_coefficients(self):
-      clf = LinearRegression()
-      clf.fit(x, y, n_iter=2000, lr=0.01)
-      np.testing.assert_array_almost_equal(clf._W, np.array([180921.19555322,  56294.90199925]))
+      lr = LinearRegression()
+      lr.fit(x, y, n_iter=2000, lr=0.01)
+      np.testing.assert_array_almost_equal(lr._W, np.array([180921.19555322,  56294.90199925]))
       
 run_tests()
 
-clf = LinearRegression()
-clf.fit(x, y, n_iter=2000, lr=0.01)
+lr = LinearRegression()
+lr.fit(x, y, n_iter=2000, lr=0.01)
 
 fig = plt.figure()
 ax = plt.axes()
 plt.title('Cost Function J for Linear Regression')
 plt.xlabel('No. of iterations')
 plt.ylabel('Cost')
-plt.plot(clf._cost_history)
+plt.plot(lr._cost_history)
 plt.show()
 
-clf._cost_history[-1]
-print("Lost Of  Linear Regression:")
-print(clf._cost_history[-1])
+lr._cost_history[-1]
+print("Loss Of  Linear Regression:")
+print(lr._cost_history[-1])
 print("                                         ")
 
 #Plotting Loss Cost function for Linear Regression
@@ -230,7 +233,7 @@ ax = plt.axes()
 plt.title('Cost Function J for Multivariable Linear Regression')
 plt.xlabel('No. of iterations')
 plt.ylabel('Cost')
-plt.plot(clf._cost_history, color='red')
+plt.plot(lr._cost_history, color='red')
 plt.show()
 
 #Animation
@@ -254,13 +257,13 @@ x = df_train[['OverallQual', 'GrLivArea', 'GarageCars']]
 x = (x - x.mean()) / x.std()
 x = np.c_[np.ones(x.shape[0]), x] 
 
-clf = LinearRegression()
-clf.fit(x, y, n_iter=2000, lr=0.01)
+lr = LinearRegression()
+lr.fit(x, y, n_iter=2000, lr=0.01)
 
-clf._W
-clf._cost_history[-1]
-print("Lost Of Mulltivariable Linear Regression:")
-print(clf._cost_history[-1])
+lr._W
+lr._cost_history[-1]
+print("Loss Of Mulltivariable Linear Regression:")
+print(lr._cost_history[-1])
 
 
 #Generate the animation data,
@@ -274,14 +277,18 @@ def init():
 
 def animate(i):
     x = np.linspace(-5, 20, 1000)
-    y = clf._w_history[i][1]*x + clf._w_history[i][0]
+    y = lr._w_history[i][1]*x + lr._w_history[i][0]
     line.set_data(x, y)
-    annotation.set_text('Cost = %.2f e10' % (clf._cost_history[i]/10000000000))
+    annotation.set_text('Cost = %.2f e10' % (lr._cost_history[i]/10000000000))
     return line, annotation
 
 anim = animation.FuncAnimation(fig, animate, init_func=init,
                                frames=300, interval=10, blit=True)
 
 plt.show()
+
+
+
+
 
 
